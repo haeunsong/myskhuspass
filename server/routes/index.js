@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const app = express();
 const bodyParser = require('body-parser');
+
+const config = require('../config/key');
 // user model 가져오기
 const {User} = require("../models/User");
 
@@ -15,7 +17,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://haeun:haeun1234@hoyahoit.c8m8a.mongodb.net/<dbname>?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
   useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
