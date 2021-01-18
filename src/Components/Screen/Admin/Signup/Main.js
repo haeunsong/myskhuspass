@@ -22,8 +22,23 @@ const Main = ({ setClickView }) => {
   // 이 때 여기서 완료 메세지를 성공 콜백에 출력하도록!
   // callback, handler 함수들은 useCallback 함수들 사용 권장.
 
-  //  회원가입 api =>  /user/adminsignup 
-  const onCertifyEmail = async (email, userName, major, userId, userPw) => {
+  const onCertifyEmailClick = async (email, userName, major, userId, userPw) => {
+    // 백엔드 회원가입 api 호출
+    // /user/adminsignup
+    fetch('https://skhuspass.sleepy-owl.com/user/adminsignup',{
+      method:"POST",
+    })
+    .then((resp) => {
+      if (resp.ok) alert("이메일로 인증링크를 전송하였습니다. 이메일을 확인해주세요.");
+      else alert("ERROR!!!");
+    })
+    .then((resp) => resp.json())
+    
+
+
+  }
+
+  const onAdminSignupClick = () => {
     const requestOptions = {
       method: "POST",
       // stringify() : 객체 => JSON문자열로 변환
@@ -36,27 +51,8 @@ const Main = ({ setClickView }) => {
         userpw: userPwUseInput.value
       })
     };
-    fetch('https://skhuspass.sleepy-owl.com/user/adminsignup', requestOptions)
-    .then((resp) => {
-      if (resp.ok) alert("이메일로 인증링크를 전송하였습니다. 이메일을 확인해주세요.");
-      else alert("ERROR!!!");
-    })
-    .then((resp) => resp.json())
-    
-
-
-  }
-  const onAdminSignup = () => {
     alert('회원가입이 완료되었습니다. 다시 로그인해주세요.');
 
-  }
-  const onCertifyEmailClick = () => {
-    // 이메일로 인증링크 보냄. 
-    onCertifyEmail();
-  };
-  const onAdminSignupClick = () => {
-    onAdminSignup(emailUseInput.value, nameUseInput.value, majorUseInput.value,
-      userIdUseInput.value, userPwUseInput.value);
   }
 
   // useInput이 반환하는 것: placeholder,value,onChange
