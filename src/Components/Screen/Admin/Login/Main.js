@@ -28,17 +28,20 @@ const Main = ({ setClickView }) => {
 
   // useInput이 반환하는 것: placeholder,value,onChange
   return (
-    <Viewer>
-      <Title>건물 관리자 로그인</Title>
+    <>
+    {/* <Viewer> */}
+      <Title text="건물 관리자 로그인" />
         <Input type="text" name="email" required value={emailUseInput.value} {...emailUseInput} />
         <Input type="password" name="password" required value={passwordUseInput.value} {...passwordUseInput} />
+        
         <LoginButton onClick={onAdminLoginClick}/>
 
-      <Link to="/admin/signup" style={{textDecoration:'none'}}>
-      <MoveToSignupButton></MoveToSignupButton>
+      <Link to="/admin/signup" style={{textDecoration:'none', display: 'grid' }}>
+      <MoveToSignupButton />
       </Link>    
 
-    </Viewer>
+    {/* </Viewer> */}
+    </>
   );
 };
 

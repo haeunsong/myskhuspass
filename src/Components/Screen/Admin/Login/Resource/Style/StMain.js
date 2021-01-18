@@ -1,24 +1,56 @@
 import React from "react";
 
-import styled from "styled-components";
+// import styled from "styled-components";
+import { makeStyles } from "@material-ui/core/styles";
+import Box from '@material-ui/core/Box';
 
-export const Viewer = styled.div`
+export const ViewerStyle  = makeStyles({
+  main:{
+    width:100,
+    height:100,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems:"center"
 
-  width: 100vw;
-  height: 100vh;
+  }
+});
+
+export const TitleStyle = makeStyles((theme)=> ({
+  main:{
+      margin: theme.spacing(3),
+      fontSize:25,
+      fontWeight:600
+  }
+}));
+
+export const Viewer = () => {
+  const classes = ViewerStyle();
+  return <Box className={classes.main}></Box>
+}
+export const Title = ({text}) => {
+  const classes = TitleStyle();
+  return <Box component="div" display="flex" className={classes.main}>{text}</Box>
+
+}
+// })
+// export const Viewer = styled.div`
+
+//   width: 100vw;
+//   height: 100vh;
   
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
 
-`;
-export const Title = styled.div`
-  width: 100%
-  height: 50px;
+// `;
+// export const Title = styled.div`
+//   width: 100%
+//   height: 50px;
 
-  margin: 0 0 20px 0;
+//   margin: 0 0 20px 0;
 
-  font-size: 25px;
-  font-weight: 600;
-`;
+//   font-size: 25px;
+//   font-weight: 600;
+// `;

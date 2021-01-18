@@ -1,6 +1,5 @@
 import React from "react";
 
-import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles"; // styles 기능 추가
 import Button from "@material-ui/core/Button";
 
@@ -45,7 +44,7 @@ export const ButtonStyle = makeStyles({
 
 export const LoginButtonViewer = ({onClick}) =>{
   const classes = ButtonStyle();
-  return <Button onClick={onClick} variant="contained" className={classes.login}>로그인하기</Button>;
+  return <Button onClick={onClick} fullWidth variant="contained" className={classes.login}>로그인하기</Button>;
 }
 export const MoveToSignupButtonViewer = ({onClick}) =>{
   const classes = ButtonStyle();

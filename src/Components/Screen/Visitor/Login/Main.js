@@ -25,7 +25,7 @@ const Main = ({ setClickView }) => {
   // 
   return (
     <Viewer>
-      <Title>방문자 로그인</Title>
+      <Title text="방문자 로그인" />
       <Input type="text" {...phoneUseInput} />
       <CertifyPhoneButton onClick={onCertifyPhoneClick} />
       <Input type="text" {...certifyNumUseInput} />
