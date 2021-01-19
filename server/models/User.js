@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -8,9 +9,9 @@ const userSchema = new mongoose.Schema({
     maxlength: 50
   },
   email: {
-    type:String,
-    unique: true
-    
+    type: String,
+    trim:true,
+    unique: 1
   },
   password: {
     type: String,
@@ -61,6 +62,26 @@ userSchema.pre('save', function (next) {
   }
 })
 
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  // plainPassword 1234567 를 암호화 한후 db에 있는 암호화된 비밀번호와 같은지 확인
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    if (err) return cb(err)
+    cb(null, isMatch)
+  })
+}
+
+userSchema.methods.generateToken = function(cb) {
+  var user = this;
+
+  var token = jwt.sign(user._id,'secretToken');
+
+  // user._id + 'secretToken' = token 
+  user.token = token;
+  user.save((err,user)=>{
+    if(err) return cb(err)
+    cb(null,user)
+  })
+}
 const User = mongoose.model('User', userSchema)
 
 // 다른 곳에서도 사용하게 하려고.
