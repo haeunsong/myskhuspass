@@ -82,7 +82,7 @@ app.post('/api/login',(req,res) => {
 
 // auth => 미들웨어
 // 엔드포인트(링크)에서 req 받은다음에 콜백펑션하기전에 중간에서 해주는거
-app.get('/api/users/auth',auth,(req,res)=>{
+app.get('/api/auth',auth,(req,res)=>{
 
   // 여기까지 미들웨어를 통과해왔다는 얘기는 Authentication이 true라는 말.
   res.status(200).json({
@@ -95,6 +95,16 @@ app.get('/api/users/auth',auth,(req,res)=>{
     role: req.user.role,
     image: req.user.image
   })
+})
 
+app.get('/api/logout',auth,(req,res)=>{
+  User.findOneAndUpdate({_id: req.user._id}),
+  {token: ""},
+  (err,user)=>{
+    if(err) return res.json({success: false,err});
+    return res.status(200).send({
+      success: true
+    })
+  }
 })
 app.listen(port,()=>console.log(`Listening on port ${port}`));
