@@ -11,11 +11,12 @@ const { User } = require("./models/User");
 // bodyParser에 옵션주기
 // bodyParser: client에서 오는 정보를 서버에서 분석할 수 있게 해주는 것
 
+// application/json 분석할 수 있게 해줌.
+app.use(bodyParser.json());
+
 // application/x-www-form-urlencoded 분석할 수 있게 해줌.
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// application/json 분석할 수 있게 해줌.
-app.use(bodyParser.json());
 app.use(cookieParser());
 
 const mongoose = require('mongoose');
@@ -31,7 +32,7 @@ mongoose.connect(config.mongoURI, {
   res.send({ greeting: 'Hello haeun, Be happy :)' })
 );
 
-app.post('/register', (req, res) => {
+app.post('/api/register', (req, res) => {
   // 회원가입 할 때 필요한 정보들을 client에서 가져오면
   // 그것들을 db에 넣어준다.
   const user = new User(req.body)
@@ -47,13 +48,14 @@ app.post('/register', (req, res) => {
   })
 })
 
-app.post('/login',(req,res) => {
+app.post('/api/login',(req,res) => {
   // 요청된 이메일을 데이터베이스에서 있는지 찾는다.
   User.findOne({email: req.body.email},(err,user) => {
     if(!user){
       return res.json({
         loginSuccess: false,
-        message: '제공된 이메일에 해당되는 유저가 없습니다.'
+        message: '제공된 이메일에 해당되는 유저가 없습니다.',
+        err
       })
     }
   // 요청된 이메일이 데베에 있다면 비밀번호가 같은지 확인
@@ -66,16 +68,14 @@ app.post('/login',(req,res) => {
       if(err) return res.status(400).send(err);
       
       // 토큰을 저장한다. 어디에? 쿠키/로컬스토리지 등등...
+      res.cookie("x_auth",user.token)
+      .status(200)
+      .json({loginSuccess: true, userId: user._id})
 
     })
-
   })
 
   })
-
-  
-
 
 })
-
 app.listen(port,()=>console.log(`Listening on port ${port}`));

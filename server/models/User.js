@@ -11,7 +11,10 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     trim:true,
-    unique: 1
+    require: true,
+    index: true,
+    unique: true,
+    sparse:true
   },
   password: {
     type: String,
@@ -65,20 +68,23 @@ userSchema.pre('save', function (next) {
 userSchema.methods.comparePassword = function (plainPassword, cb) {
   // plainPassword 1234567 를 암호화 한후 db에 있는 암호화된 비밀번호와 같은지 확인
   bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-    if (err) return cb(err)
+    if (err) return cb(err);
     cb(null, isMatch)
   })
 }
 
 userSchema.methods.generateToken = function(cb) {
+  // json web token을 이용해서 토큰을 생성하기
+  // ES5 문법 사용중...
   var user = this;
 
-  var token = jwt.sign(user._id,'secretToken');
+  var token = jwt.sign(user._id.toHexString(),'secretToken');
 
   // user._id + 'secretToken' = token 
   user.token = token;
   user.save((err,user)=>{
-    if(err) return cb(err)
+    if(err) return cb(err);
+    // save가 잘되었으면 에러는 없고, user정보만 전달해준다.
     cb(null,user)
   })
 }

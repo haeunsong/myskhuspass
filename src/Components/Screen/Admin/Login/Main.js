@@ -13,9 +13,8 @@ const Main = ({ setClickView }) => {
   const onAdminLogin =  async(email, password) => {
     // e.preventDefault();
     try {
-      let data;
-      data = await authService.signInWithEmailAndPassword(email, password);
-      console.log(data);
+      let result = await authService.signInWithEmailAndPassword(email, password);
+      console.log(result);
     } catch (error) {
       setError(error.message);
       alert(error);
@@ -33,11 +32,10 @@ const Main = ({ setClickView }) => {
       <Title text="건물 관리자 로그인" />
         <Input type="text" name="email" required value={emailUseInput.value} {...emailUseInput} />
         <Input type="password" name="password" required value={passwordUseInput.value} {...passwordUseInput} />
-        
         <LoginButton onClick={onAdminLoginClick}/>
 
-      <Link to="/admin/signup" style={{textDecoration:'none', display: 'grid' }}>
-      <MoveToSignupButton />
+      <Link to="/admin/signup" style={{textDecoration:'none'}}>
+      <MoveToSignupButton></MoveToSignupButton>
       </Link>    
 
     {/* </Viewer> */}
