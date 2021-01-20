@@ -7,6 +7,7 @@ const port = 5000;
 const config = require('./config/key');
 // user model 가져오기
 const { User } = require("./models/User");
+const {auth} = require("./middleware/auth");
 
 // bodyParser에 옵션주기
 // bodyParser: client에서 오는 정보를 서버에서 분석할 수 있게 해주는 것
@@ -75,6 +76,24 @@ app.post('/api/login',(req,res) => {
     })
   })
 
+  })
+
+})
+
+// auth => 미들웨어
+// 엔드포인트(링크)에서 req 받은다음에 콜백펑션하기전에 중간에서 해주는거
+app.get('/api/users/auth',auth,(req,res)=>{
+
+  // 여기까지 미들웨어를 통과해왔다는 얘기는 Authentication이 true라는 말.
+  res.status(200).json({
+    _id: req.user._id, // auth.js에서 req.user=user; 이 작업을 했기때문에 가능.
+    isAdmin: req.user.role === 0 ? false : true, // role 0 일반유저 / 0이 아니면 관리자
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image
   })
 
 })
